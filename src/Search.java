@@ -196,18 +196,18 @@ public class Search {
              * Run search using a single task
              *********************************************/
             SearchTask singleSearch = new SearchTask(text, pattern, 0, len);
-
             List<Integer> singleResult = null;
 
             /*
              * Run a couple of times on engine for loading all classes and
              * cache warm-up
              */
-            for (int i = 0; i < warmups; i++) {
+
+           for (int i = 0; i < warmups; i++) {
                 engine.submit(singleSearch).get();
             }
 
-            /* Run for time measurement(s) and proper result */
+           /* Run for time measurement(s) and proper result */
             totalTime = 0.0;
 
             for (int run = 0; run < runs; run++) {
@@ -231,14 +231,19 @@ public class Search {
              * Run search using multiple tasks
              *********************************************/
 
-
-
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
+            //Oppgave 2
             // Add tasks to list here
-            taskList.add(new SearchTask(text, pattern, len, len));
-            taskList.add(new SearchTask(text, pattern, len, len));
-            
+            //  final var = konstant. var = int
+            final var split = (len/ntasks);
+            final var buffer = (pattern.length - 1);
+
+            if (ntasks <= 1 )
+                taskList.add(new SearchTask(text, pattern, 0, len));
+            else for (var i = 0; i <= ntasks; i++)
+                taskList.add(new SearchTask(text, pattern, split*i, (split*i+split)+buffer));
+
             List<Integer> result = null;
 
             // Run the tasks a couple of times
@@ -257,7 +262,12 @@ public class Search {
 
                 // Overall result is an ordered list of unique occurrence positions
                 result = new LinkedList<Integer>();
+
                 // Combine future results into an overall result
+                for (var future: futures) {
+                    final var section = future.get();
+                    result.addAll(section);
+                }
 
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;
