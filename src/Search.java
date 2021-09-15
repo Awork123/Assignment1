@@ -191,6 +191,7 @@ public class Search {
 
             /* Setup execution engine */
             ExecutorService engine = Executors.newSingleThreadExecutor();
+           // ExecutorService engine = Executors.newCachedThreadPool();
 
             /**********************************************
              * Run search using a single task
@@ -249,6 +250,7 @@ public class Search {
             // Run the tasks a couple of times
             for (int i = 0; i < warmups; i++) {
                 engine.invokeAll(taskList);
+
             }
 
             totalTime = 0.0;
