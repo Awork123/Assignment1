@@ -2,6 +2,10 @@
  * 02158 Concurrent Programming, Fall 2021
  * Mandatory Assignment 1
  * Version 1.1
+ * Andreas Work -
+ * Lucas  -
+ * dfasda
+ *
  */
 
 
@@ -190,8 +194,12 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            ExecutorService engine = Executors.newSingleThreadExecutor();
-           // ExecutorService engine = Executors.newCachedThreadPool();
+            //Hører til opgave 2
+            //ExecutorService engine = Executors.newSingleThreadExecutor();
+            //problem 3
+            //ExecutorService engine = Executors.newCachedThreadPool();
+            //Problem 4
+            ExecutorService engine = Executors.newFixedThreadPool(nthreads);
 
             /**********************************************
              * Run search using a single task
@@ -234,15 +242,13 @@ public class Search {
 
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
-            //Oppgave 2
             // Add tasks to list here
-            //  final var = konstant. var = int
             final var split = (len/ntasks);
             final var buffer = (pattern.length - 1);
 
             if (ntasks <= 1 )
                 taskList.add(new SearchTask(text, pattern, 0, len));
-            else for (var i = 0; i <= ntasks; i++)
+            else for (int i = 0; i <= ntasks; i++)
                 taskList.add(new SearchTask(text, pattern, split*i, (split*i+split)+buffer));
 
             List<Integer> result = null;
@@ -276,16 +282,21 @@ public class Search {
 
                 System.out.printf("\nUsing %2d tasks: ", ntasks);
                 writeRun(run);  writeResult(result);  writeTime(time);
+
             }
 
             double multiTime = totalTime / runs;
             System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks);
             writeTime(multiTime);  System.out.println();
+            //data to .txt - Problem 3
+            writeData(singleTime+", "+multiTime+", "+(singleTime / multiTime)+", "+ntasks);
+
 
 
             if (!singleResult.equals(result)) {
                 System.out.println("\nERROR: lists differ");
             }
+
             System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
 
 
