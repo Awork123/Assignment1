@@ -243,8 +243,9 @@ public class Search {
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
             // Add tasks to list here
-            final var split = (len/ntasks);
-            final var buffer = (pattern.length - 1);
+            // Begge var var før
+            final int split = (len/ntasks);
+            final int buffer = (pattern.length - 1);
 
             if (ntasks <= 1 )
                 taskList.add(new SearchTask(text, pattern, 0, len));
@@ -272,8 +273,8 @@ public class Search {
                 result = new LinkedList<Integer>();
 
                 // Combine future results into an overall result
-                for (var future: futures) {
-                    final var section = future.get();
+                for (Future<List<Integer>> future: futures) {
+                    final List<Integer> section = future.get();
                     result.addAll(section);
                 }
 
