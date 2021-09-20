@@ -194,12 +194,15 @@ public class Search {
                     fname, new String(pattern), ntasks, nthreads, warmups, runs);
 
             /* Setup execution engine */
-            //Hører til opgave 2
-            //ExecutorService engine = Executors.newSingleThreadExecutor();
-            //problem 3
-            //ExecutorService engine = Executors.newCachedThreadPool();
-            //Problem 4
-            ExecutorService engine = Executors.newFixedThreadPool(nthreads);
+
+            //ExecutorService for problem 2
+           // ExecutorService engine = Executors.newSingleThreadExecutor();
+
+            //ExecutorService for problem 3
+            ExecutorService engine = Executors.newCachedThreadPool();
+
+            //ExecutorService for problem 4
+           // ExecutorService engine = Executors.newFixedThreadPool(nthreads);
 
             /**********************************************
              * Run search using a single task
@@ -243,7 +246,6 @@ public class Search {
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
             // Add tasks to list here
-            // Begge var var før
             final int split = (len/ntasks);
             final int buffer = (pattern.length - 1);
 
@@ -289,8 +291,9 @@ public class Search {
             double multiTime = totalTime / runs;
             System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks);
             writeTime(multiTime);  System.out.println();
-            //data to .txt - Problem 3
-            writeData(singleTime+", "+multiTime+", "+(singleTime / multiTime)+", "+ntasks);
+
+            //data to .txt
+            writeData(singleTime+", "+multiTime+", "+(singleTime / multiTime)+", "+ntasks+", "+nthreads);
 
 
 
